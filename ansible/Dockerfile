@@ -1,15 +1,9 @@
 FROM ubuntu:18.04
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
-        bzip2 \
-        ca-certificates \
         curl \
-        git \
+        ca-certificates \
         gosu \
-        libglib2.0-0 \
-        libxext6 \
-        libsm6 \
-        libxrender1 \
         sudo && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -21,13 +15,18 @@ USER ansible
 ENV HOME /home/ansible
 WORKDIR /home/ansible
 RUN MINICONDA=Miniconda3-latest-Linux-x86_64.sh && \
-    curl -LO https://repo.continuum.io/miniconda/$MINICONDA && \
-    /bin/bash $MINICONDA -b -p $HOME/miniconda3 && \
+    curl -LO https://repo.anaconda.com/miniconda/$MINICONDA && \
+    /bin/bash $MINICONDA -b -p $HOME/miniconda && \
     rm -rf $MINICONDA &&\
-    $HOME/miniconda3/bin/conda update -y conda && \
-    $HOME/miniconda3/bin/conda update -y --all && \
-    $HOME/miniconda3/bin/pip install -U pip && \
-    echo '. $HOME/miniconda3/etc/profile.d/conda.sh' >>$HOME/.bashrc && \
-    echo 'export PATH=$HOME/miniconda3/bin:$PATH' >>$HOME/.profile
-ENV PATH /home/ansible/miniconda3/bin:$PATH
+    $HOME/miniconda/bin/conda update -y conda && \
+    $HOME/miniconda/bin/conda update -y --all && \
+    $HOME/miniconda/bin/pip install -U pip && \
+    $HOME/miniconda/bin/conda clean -tipsy && \
+    find $HOME/miniconda/ -follow -type f -name '*.a' -delete && \
+    find $HOME/miniconda/ -follow -type f -name '*.js.map' -delete && \
+    echo '. $HOME/miniconda/etc/profile.d/conda.sh' >>$HOME/.bashrc && \
+    echo 'conda activate base' >>$HOME/.bashrc && \
+    echo 'export PATH=$HOME/miniconda/bin:$PATH' >>$HOME/.profile && \
+    $HOME/miniconda/bin/conda clean -afy
+ENV PATH /home/ansible/miniconda/bin:$PATH
 
