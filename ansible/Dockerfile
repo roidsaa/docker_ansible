@@ -1,8 +1,6 @@
 FROM ubuntu:18.04
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
-        curl \
-        ca-certificates \
         python3.8 \
         sudo && \
     ln -s /usr/bin/python3.8 /usr/bin/python3 && \
