@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
         python3.8 \
-        python-apt \
+        python3-apt \
         sudo && \
     ln -s /usr/bin/python3.8 /usr/bin/python3 && \
     apt-get clean && \
