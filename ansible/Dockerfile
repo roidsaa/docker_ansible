@@ -1,8 +1,15 @@
 FROM ubuntu:18.04
 RUN apt-get update --fix-missing && \
     apt-get install -y --no-install-recommends \
+        apt-utils \
+        wget \
+        file \
+        git \
+        gpg \
+        locales \
         python3-apt \
-        sudo && \
+        sudo \
+        xdg-user-dirs && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 RUN useradd -m ansible && \
